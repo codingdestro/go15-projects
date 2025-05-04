@@ -73,6 +73,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/movies", getMovies).Methods("GET")
 	router.HandleFunc("/movies/{id}", getMovie).Methods("GET")
+	router.HandleFunc("/movies", createMovie).Methods("POST")
 
 	fmt.Println(("welcome to movies server!"))
 	http.ListenAndServe(":8080", router)
@@ -96,4 +97,16 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	fmt.Fprint(w, "sorry :( movie not found")
+}
+
+func createMovie(w http.ResponseWriter, r *http.Request) {
+	var movie Movies
+	err := json.NewDecoder(r.Body).Decode(&movie)
+	if err != nil {
+		fmt.Fprint(w, "failed to parse json data!")
+	}
+
+	movies = append(movies, movie)
+
+	fmt.Fprint(w, "new movie added to server!")
 }
