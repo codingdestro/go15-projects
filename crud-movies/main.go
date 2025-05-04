@@ -74,6 +74,8 @@ func main() {
 	router.HandleFunc("/movies", getMovies).Methods("GET")
 	router.HandleFunc("/movies/{id}", getMovie).Methods("GET")
 	router.HandleFunc("/movies", createMovie).Methods("POST")
+	router.HandleFunc("/movies/{id}", updateMovie).Methods("PUT")
+	router.HandleFunc("/movies/{id}", deleteMovie).Methods("DELETE")
 
 	fmt.Println(("welcome to movies server!"))
 	http.ListenAndServe(":8080", router)
@@ -109,4 +111,45 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 	movies = append(movies, movie)
 
 	fmt.Fprint(w, "new movie added to server!")
+}
+
+func updateMovie(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	var movie Movies
+	err := json.NewDecoder(r.Body).Decode(&movie)
+	if err != nil {
+		fmt.Fprint(w, "failed update movie")
+	}
+	for _, v := range movies {
+		if v.ID == id {
+			v = movie
+			fmt.Fprint(w, "movie updated successfully!")
+			return
+		}
+	}
+
+	fmt.Fprint(w, "id not found to update movie")
+}
+
+func deleteMovie(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	var isDeleted bool = false
+	id := vars["id"]
+	var newMoves []Movies
+	for _, movie := range movies {
+		if movie.ID != id {
+			newMoves = append(newMoves, movie)
+		} else {
+			isDeleted = true
+		}
+	}
+	if isDeleted {
+		movies = newMoves
+		fmt.Fprint(w, "Movie deletd successfully!")
+		return
+	}
+
+	fmt.Fprint(w, "Movie Not Found to delete!")
+
 }
