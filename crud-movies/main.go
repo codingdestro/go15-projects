@@ -70,10 +70,11 @@ var movies []Movies = []Movies{
 
 func main() {
 
-	fmt.Println(("welcome to movies server!"))
 	router := mux.NewRouter()
-	router.HandleFunc("/", getMovies).Methods("GET")
+	router.HandleFunc("/movies", getMovies).Methods("GET")
+	router.HandleFunc("/movies/{id}", getMovie).Methods("GET")
 
+	fmt.Println(("welcome to movies server!"))
 	http.ListenAndServe(":8080", router)
 }
 
@@ -81,4 +82,18 @@ func getMovies(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "Application/json")
 	json.NewEncoder(w).Encode(movies)
 
+}
+
+func getMovie(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	for _, v := range movies {
+		if v.ID == id {
+			movie := v
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(movie)
+			return
+		}
+	}
+	fmt.Fprint(w, "sorry :( movie not found")
 }
