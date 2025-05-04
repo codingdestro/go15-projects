@@ -121,12 +121,23 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprint(w, "failed update movie")
 	}
+
+	var newMovies []Movies
+	var isUpdate bool = false
+
 	for _, v := range movies {
 		if v.ID == id {
-			v = movie
-			fmt.Fprint(w, "movie updated successfully!")
-			return
+			newMovies = append(newMovies, movie)
+			isUpdate = true
+		} else {
+			newMovies = append(newMovies, v)
 		}
+	}
+
+	if isUpdate {
+		fmt.Fprint(w, "Movie successfully updated!")
+		movies = newMovies
+		return
 	}
 
 	fmt.Fprint(w, "id not found to update movie")
