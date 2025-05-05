@@ -1,8 +1,8 @@
 package models
 
 type Book struct {
-	Id       string
-	Title    string
+	Id     string `gorm:"primaryKey"`
+	Title  string
 	Author string
-	Price    float64
+	Price  float64
 }
