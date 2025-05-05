@@ -3,8 +3,10 @@ package main
 import (
 	"book-store/config"
 	"book-store/models"
+	"book-store/routes"
 	"book-store/utils"
 	"fmt"
+	"net/http"
 )
 
 func main() {
@@ -14,11 +16,6 @@ func main() {
 	config.ConnectDB()
 	db := config.GetDB()
 	db.AutoMigrate(&models.Book{})
-
-	db.Create(&models.Book{
-		Id:     utils.GenerateID(),
-		Title:  "C Programming",
-		Author: "Charls babege",
-		Price:  525.23,
-	})
+	router := routes.InitRoutes()
+	http.ListenAndServe(":8080", router)
 }
