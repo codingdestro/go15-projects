@@ -7,5 +7,6 @@ import (
 
 func main() {
 	fmt.Println("welcome to the bookstore")
-	utils.Greeting("Mohd Anas")
+	utils.CreateLettersList()
+	fmt.Println(utils.GenerateID())
 }
