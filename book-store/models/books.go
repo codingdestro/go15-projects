@@ -3,6 +3,6 @@ package models
 type Book struct {
 	Id       string
 	Title    string
-	AuthorId string
+	Author string
 	Price    float64
 }
