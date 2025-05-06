@@ -62,7 +62,36 @@ func GetABook(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateBook(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+	db := config.GetDB()
 
+	buffer, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprint(w, "No data found!")
+		return
+	}
+
+	var newBook models.Book
+	err = json.Unmarshal(buffer, &newBook)
+	if err != nil {
+		fmt.Fprint(w, "No data found!")
+		return
+	}
+
+	var book models.Book
+	db.Where("id = ?", id).First(&book)
+
+	book.Author = newBook.Author
+	book.Title = newBook.Title
+	book.Price = newBook.Price
+	res := db.Save(book)
+	if res.Error != nil {
+		fmt.Fprint(w, "Failed to update book!")
+		return
+	}
+
+	fmt.Fprint(w, "Book has been updated!")
 }
 
 func DeleteBook(w http.ResponseWriter, r *http.Request) {
