@@ -12,7 +12,6 @@ import (
 func main() {
 	fmt.Println("welcome to the bookstore")
 	utils.CreateLettersList()
-	fmt.Println(utils.GenerateID())
 	config.ConnectDB()
 	db := config.GetDB()
 	db.AutoMigrate(&models.Book{})
