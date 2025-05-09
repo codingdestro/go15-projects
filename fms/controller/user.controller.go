@@ -29,6 +29,11 @@ func Login(c *fiber.Ctx) error {
 	if res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "user doesn't exists signup please!"})
 	}
+
+	if myUser.Password != user.Password {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "password did not match"})
+	}
+
 	token, err := utils.CreateToken("abcd")
 	if err != nil {
 		fmt.Println("failed to create token")

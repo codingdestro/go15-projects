@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f5f7fa;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+      }
+
+      .signup-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.2s ease;
+        box-sizing: border-box;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #42b883;
+        box-shadow: 0 0 0 2px rgba(66, 184, 131, 0.2);
+      }
+
+      .btn {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #42b883;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .btn:hover {
+        background-color: #3aa876;
+      }
+
+      .title {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .error-message {
+        color: #e74c3c;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 0.875rem;
+        color: #2c3e50;
+      }
+
+      .login-link a {
+        color: #42b883;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="signup-container">
+        <h1 class="title">Create Account</h1>
+        <form id="signupForm">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Create a password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+          <div
+            id="errorMessage"
+            class="error-message"
+            style="display: none"
+          ></div>
+          <button type="submit" class="btn">Create Account</button>
+          <div class="login-link">
+            Already have an account? <a href="/login">Sign in</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("signupForm");
+        const errorMessage = document.getElementById("errorMessage");
+
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Get form values
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+
+          // Validate passwords match
+          if (password !== confirmPassword) {
+            showError("Passwords do not match");
+            return;
+          }
+
+          // Validate password strength (minimum 8 characters)
+          if (password.length < 4) {
+            showError("Password must be at least 8 characters long");
+            return;
+          }
+
+          try {
+            const response = await fetch("/api/auth/signup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name,
+                email,
+                password,
+              }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.error || "Signup failed");
+            }
+
+            // Redirect to login page on success
+            window.location.href = "/login";
+          } catch (error) {
+            showError(error.message);
+          }
+        });
+
+        function showError(message) {
+          errorMessage.textContent = message;
+          errorMessage.style.display = "block";
+        }
+
+        // Clear error message when user starts typing
+        const inputs = form.querySelectorAll("input");
+        inputs.forEach((input) => {
+          input.addEventListener("input", () => {
+            errorMessage.style.display = "none";
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
