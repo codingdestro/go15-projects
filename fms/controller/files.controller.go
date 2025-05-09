@@ -5,8 +5,6 @@ import (
 	"fms/config"
 	"fms/models"
 	"fms/utils"
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -19,8 +17,6 @@ func FetchFolders(c *fiber.Ctx) error {
 	if res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to fetch user folders"})
 	}
-
-	fmt.Println(folder)
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"msg": "fetched all folders", "folders": folder})
 }
@@ -77,7 +73,7 @@ func RenameFolder(c *fiber.Ctx) error {
 
 func DeleteFolder(c *fiber.Ctx) error {
 	params := c.AllParams()
-	folderId := params["folderId"]
+	folderId := params["folderID"]
 
 	res := config.DB.Where("id = ?", folderId).Delete(models.Folders{})
 	if res.Error != nil {
