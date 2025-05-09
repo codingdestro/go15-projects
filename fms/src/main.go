@@ -12,8 +12,11 @@ import (
 func InitRoutes(app *fiber.App) {
 	app.Post("/login", controller.Login)
 	app.Post("/signup", controller.SignUp)
-	app.Use("/home", middleware.AuthToken)
-	app.Post("/home", home)
+	app.Use("/user", middleware.AuthToken)
+	app.Post("/user", home)
+	app.Post("/user/folders", controller.FetchFolders)
+	app.Post("/user/folders/create/:name", controller.CreateFolder)
+	app.Delete("/user/folders/:folderID", controller.DeleteFolder)
 }
 
 func main() {
