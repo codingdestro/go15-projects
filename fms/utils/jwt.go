@@ -35,6 +35,5 @@ func VerifyToken(signedToken string) (jwt.MapClaims, error) {
 	}
 
 	claims = token.Claims.(jwt.MapClaims)
-
 	return claims, nil
 }
