@@ -10,13 +10,21 @@ import (
 )
 
 func InitRoutes(app *fiber.App) {
-	app.Post("/login", controller.Login)
-	app.Post("/signup", controller.SignUp)
-	app.Use("/user", middleware.AuthToken)
+	app.Get("/login", func(c *fiber.Ctx) error {
+		return c.SendFile("./static/login.html")
+	})
+	app.Get("/signup", func(c *fiber.Ctx) error {
+		return c.SendFile("./static/signup.html")
+	})
+
+	app.Post("/api/auth/login", controller.Login)
+	app.Post("/api/auth/signup", controller.SignUp)
+	app.Use("/api/user", middleware.AuthToken)
+	app.Post("/api/user/folders", controller.FetchFolders)
+	app.Post("/api/user/folders/create/:name", controller.CreateFolder)
+	app.Delete("/api/user/folders/:folderID", controller.DeleteFolder)
+
 	app.Post("/user", home)
-	app.Post("/user/folders", controller.FetchFolders)
-	app.Post("/user/folders/create/:name", controller.CreateFolder)
-	app.Delete("/user/folders/:folderID", controller.DeleteFolder)
 }
 
 func main() {
