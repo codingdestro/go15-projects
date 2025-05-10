@@ -29,6 +29,9 @@ func InitRoutes(app *fiber.App) {
 	app.Post("/api/user/folders/create/:name", controller.CreateFolder)
 	app.Delete("/api/user/folders/:folderID", controller.DeleteFolder)
 
+	app.Post("/api/user/upload", controller.Upload)
+	app.Get("/api/user/files/:folderId", controller.GetAllFiles)
+
 	app.Post("/user", home)
 }
 
