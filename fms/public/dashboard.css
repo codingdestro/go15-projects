@@ -1,0 +1,49 @@
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.folder-structure{
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.folder {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0 8px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.folder:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.breadscrum {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 8px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.folder p {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.icon {
+  width: 32px;
+  aspect-ratio: 64px;
+}

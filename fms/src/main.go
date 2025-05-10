@@ -18,8 +18,8 @@ func InitRoutes(app *fiber.App) {
 	app.Get("/signup", func(c *fiber.Ctx) error {
 		return c.SendFile("./static/signup.html")
 	})
-	app.Get("/upload", func(c *fiber.Ctx) error {
-		return c.SendFile("./static/upload.html")
+	app.Get("/dashboard", func(c *fiber.Ctx) error {
+		return c.SendFile("./static/dashboard.html")
 	})
 
 	app.Post("/api/auth/login", controller.Login)
