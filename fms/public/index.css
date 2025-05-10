@@ -1,0 +1,39 @@
+.form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  border: 1px solid black;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+.upload-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: violet;
+  cursor: pointer;
+    transition: .2s;
+}
+
+.upload-btn:hover{
+    scale: 1.1;
+}
+
+.submit-btn{
+    padding: 8px 16px;
+    border:none;
+    border-radius: 16px;
+    background-color: skyblue;
+    text-align: center;
+    cursor:pointer;
+
+}
+
+.file-input {
+  display: none;
+}

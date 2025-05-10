@@ -10,11 +10,16 @@ import (
 )
 
 func InitRoutes(app *fiber.App) {
+	app.Static("/", "./public")
+
 	app.Get("/login", func(c *fiber.Ctx) error {
 		return c.SendFile("./static/login.html")
 	})
 	app.Get("/signup", func(c *fiber.Ctx) error {
 		return c.SendFile("./static/signup.html")
+	})
+	app.Get("/dashboard", func(c *fiber.Ctx) error {
+		return c.SendFile("./static/dashboard.html")
 	})
 
 	app.Post("/api/auth/login", controller.Login)
@@ -23,6 +28,9 @@ func InitRoutes(app *fiber.App) {
 	app.Post("/api/user/folders", controller.FetchFolders)
 	app.Post("/api/user/folders/create/:name", controller.CreateFolder)
 	app.Delete("/api/user/folders/:folderID", controller.DeleteFolder)
+
+	app.Post("/api/user/upload", controller.Upload)
+	app.Get("/api/user/files/:folderId", controller.GetAllFiles)
 
 	app.Post("/user", home)
 }
@@ -40,5 +48,4 @@ func home(c *fiber.Ctx) error {
 	fmt.Println(userId)
 
 	return c.SendStatus(200)
-
 }
