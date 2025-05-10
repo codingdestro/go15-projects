@@ -22,21 +22,21 @@ function fetchFolders(token) {
         const folder = createFolder(res.folders[i].id, res.folders[i].name);
         folders.append(folder);
       }
-      console.log(folders)
+      console.log(folders);
     })
     .catch((e) => console.log(e));
 }
 
 function createFolder(id, name) {
-  const folderDiv = document.createElement('div');
-  folderDiv.className = 'folder';
+  const folderDiv = document.createElement("div");
+  folderDiv.className = "folder";
   folderDiv.id = id;
 
-  const img = document.createElement('img');
-  img.src = '/icons/folder.png';
-  img.className = 'icon';
+  const img = document.createElement("img");
+  img.src = "/icons/folder.png";
+  img.className = "icon";
 
-  const namePara = document.createElement('p');
+  const namePara = document.createElement("p");
   namePara.textContent = name;
 
   folderDiv.appendChild(img);
