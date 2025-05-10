@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload</title>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <form class="form" onsubmit="handleUpload(event)">
+      <label class="upload-btn" for="file">select file</label>
+      <input class="file-input" type="file" id="file" />
+      <input class="submit-btn" type="submit" value="upload" />
+    </form>
+  </body>
+  <script defer>
+    console.log(localStorage.getItem("token"));
+
+    function handleUpload(e) {
+      e.preventDefault();
+      const fileElement = document.querySelector("#file");
+      const file = fileElement.files[0];
+      if (!file) {
+        alert("file not selected!");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", file);
+
+      fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((e) => e.json())
+        .then((data) => console.log(data))
+        .catch((e) => console.log(e));
+      console.log("file uploaded");
+    }
+  </script>
+</html>

@@ -10,11 +10,16 @@ import (
 )
 
 func InitRoutes(app *fiber.App) {
+	app.Static("/", "./public")
+
 	app.Get("/login", func(c *fiber.Ctx) error {
 		return c.SendFile("./static/login.html")
 	})
 	app.Get("/signup", func(c *fiber.Ctx) error {
 		return c.SendFile("./static/signup.html")
+	})
+	app.Get("/upload", func(c *fiber.Ctx) error {
+		return c.SendFile("./static/upload.html")
 	})
 
 	app.Post("/api/auth/login", controller.Login)
@@ -40,5 +45,4 @@ func home(c *fiber.Ctx) error {
 	fmt.Println(userId)
 
 	return c.SendStatus(200)
-
 }
