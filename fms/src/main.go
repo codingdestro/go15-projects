@@ -31,6 +31,8 @@ func InitRoutes(app *fiber.App) {
 
 	app.Post("/api/user/upload", controller.Upload)
 	app.Get("/api/user/files/:folderId", controller.GetAllFiles)
+	app.Post("/api/user/files/:fileId", controller.DownloadFile)
+	app.Delete("/api/user/files/:fileId",controller.DeleteFile)
 
 	app.Post("/user", home)
 }
