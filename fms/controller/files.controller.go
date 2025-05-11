@@ -21,7 +21,7 @@ func Upload(c *fiber.Ctx) error {
 	}
 
 	var newFile models.Files = models.Files{
-		Id:       utils.GenerateID(),
+		Id:       filename,
 		Name:     file.Filename,
 		FolderId: folderId,
 	}
@@ -45,4 +45,34 @@ func GetAllFiles(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to fetch all files"})
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"msg": "successfully fetch files", "files": files})
+}
+
+func DeleteFile(c *fiber.Ctx) error {
+	params := c.AllParams()
+	fileId := params["fileId"]
+
+	var file models.Files
+	res := config.DB.Where("id = ?", fileId).First(&file)
+	if res.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to find you file!"})
+	}
+	if res = config.DB.Delete(file); res.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to delete file!"})
+	}
+	os.Remove("./upload/" + fileId)
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"msg": "your file has been deleted", "fileId": fileId})
+}
+
+func DownloadFile(c *fiber.Ctx) error {
+	params := c.AllParams()
+	fileId := params["fileId"]
+	var file models.Files
+	res := config.DB.Where("id = ?", fileId).First(&file)
+	if res.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to find you file!"})
+	}
+
+	return c.Download("./upload/"+fileId, file.Name)
+
 }
